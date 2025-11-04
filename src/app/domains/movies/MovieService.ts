@@ -1,5 +1,9 @@
-import MovieRepository, { MovieCreateInput } from "./MovieRepository";
+import MovieRepository from "./MovieRepository";
 import Movie from "./Movie";
+import {
+  CreateMovieDTO,
+  UpdateMovieDTO,
+} from "../../../validators/movie.validator";
 
 export default class MovieService {
   constructor(private repo = new MovieRepository()) {}
@@ -12,19 +16,11 @@ export default class MovieService {
     return this.repo.findById(id);
   }
 
-  async create(payload: MovieCreateInput): Promise<Movie> {
-    // exemplo: regra simples de negócio
-    if (!payload.title || payload.title.trim().length === 0) {
-      throw new Error("Title is required");
-    }
+  async create(payload: CreateMovieDTO): Promise<Movie> {
     return this.repo.create(payload);
   }
 
-  async update(
-    id: number,
-    payload: Partial<MovieCreateInput>
-  ): Promise<Movie | null> {
-    // poderia ter validações adicionais
+  async update(id: number, payload: UpdateMovieDTO): Promise<Movie | null> {
     return this.repo.update(id, payload);
   }
 

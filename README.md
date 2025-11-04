@@ -1,5 +1,71 @@
 # Descrição
 
+O objetivo deste projeto é facilitar a criação de novas API's seguindo um padrão pessoal. Esse padrão incluiu o uso de DSC (Domain-Service-Controller) com programação orientada a objetos. Na prática, estas são as camadas:
+
+| Camada                 | Função                                                | Exemplo                                                      |
+| ---------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
+| **Domain (Entity)**    | Define o modelo de negócio e suas regras básicas.     | `User.ts` com propriedades e métodos como `changePassword()` |
+| **Repository**         | Implementa o acesso ao banco (via Prisma).            | `UserRepository.ts`                                          |
+| **Service (Use Case)** | Lógica de aplicação que usa repositórios e entidades. | `CreateUserService.ts`                                       |
+| **Controller**         | Recebe requisições HTTP e chama serviços.             | `UserController.ts`                                          |
+| **Routes**             | Define endpoints.                                     | `user.routes.ts`                                             |
+
+#### Estrutura de pastas
+
+```
+src/
+│
+├── app/
+│   ├── domains/
+│   │   └── user/
+│   │       ├── User.ts                 # Entidade (POO)
+│   │       ├── UserRepository.ts       # Prisma + Repositório
+│   │       ├── CreateUserService.ts    # Caso de uso
+│   │       ├── UserController.ts       # Controller
+│   │       └── user.routes.ts          # Rotas Express
+│   │
+│   ├── middlewares/
+│   ├── errors/
+│   ├── utils/
+│   └── tests/
+│       ├── unit/
+│       └── e2e/
+│
+├── config/
+│   ├── prisma/
+│   │   └── client.ts
+│   ├── swagger/
+│   │   ├── swagger.ts
+│   │   └── scalar.ts
+│   ├── observability/
+│   │   ├── jaeger.ts
+│   │   └── tracer.ts
+│   └── env.ts
+│
+├── server.ts
+├── app.ts
+└── prisma/
+    └── schema.prisma
+```
+
+#### Tecnologias e integrações
+
+| Categoria            | Ferramenta                | Observações                          |
+| -------------------- | ------------------------- | ------------------------------------ |
+| **Runtime**          | Node.js (LTS)             | Base                                 |
+| **Framework**        | Express                   | Estável e minimalista                |
+| **ORM**              | Prisma                    | Tipagem forte e produtivo            |
+| **Banco**            | PostgreSQL                | Suporte nativo via Docker            |
+| **Infra local**      | Docker Compose            | Um container para DB                 |
+| **Infra deploy**     | Docker + Docker Compose   | Um container para app, outro para DB |
+| **Testes Unitários** | Jest                      | Integração simples com TS            |
+| **Testes E2E**       | Supertest + Jest          | Simula chamadas HTTP                 |
+| **Documentação**     | Swagger + Scalar          | Swagger tradicional + UI moderna     |
+| **Observabilidade**  | Jaeger + OpenTelemetry    | Rastreia requisições end-to-end      |
+| **Env Config**       | dotenv + Zod              | Validação de variáveis de ambiente   |
+| **Logger**           | Pino                      | Melhor desempenho e JSON output      |
+| **Lint & Style**     | ESLint + Prettier + Husky | Código limpo e consistente           |
+
 # Para desenvolvimento
 
 #### 🚀 Requisitos

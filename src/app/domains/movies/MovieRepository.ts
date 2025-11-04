@@ -1,12 +1,9 @@
 import prisma from "../../../config/prisma/client";
+import {
+  CreateMovieDTO,
+  UpdateMovieDTO,
+} from "../../../validators/movie.validator";
 import Movie from "./Movie";
-
-export type MovieCreateInput = {
-  title: string;
-  description?: string | null;
-  releaseYear?: number | null;
-  rating?: number | null;
-};
 
 export default class MovieRepository {
   async findAll(): Promise<Movie[]> {
@@ -21,15 +18,12 @@ export default class MovieRepository {
     return row ? new Movie(row as any) : null;
   }
 
-  async create(data: MovieCreateInput): Promise<Movie> {
+  async create(data: CreateMovieDTO): Promise<Movie> {
     const row = await prisma.movie.create({ data });
     return new Movie(row as any);
   }
 
-  async update(
-    id: number,
-    data: Partial<MovieCreateInput>
-  ): Promise<Movie | null> {
+  async update(id: number, data: UpdateMovieDTO): Promise<Movie | null> {
     try {
       const row = await prisma.movie.update({
         where: { id },
