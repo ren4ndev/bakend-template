@@ -6,7 +6,7 @@ import {
 } from "../../../validators/movie.validator";
 
 export default class MovieService {
-  constructor(private repo = new MovieRepository()) {}
+  constructor(private repo: MovieRepository) {}
 
   async listAll(): Promise<Movie[]> {
     return this.repo.findAll();

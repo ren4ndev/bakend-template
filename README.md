@@ -1,14 +1,16 @@
 # Descrição
 
-O objetivo deste projeto é facilitar a criação de novas API's seguindo um padrão pessoal. Esse padrão incluiu o uso de DSC (Domain-Service-Controller) com programação orientada a objetos. Na prática, estas são as camadas:
+O objetivo deste projeto é facilitar a criação de novas API's seguindo um padrão de arquitetura por Domínio. Na prática, para cada domínio (ex: "filmes"), temos as seguintes camadas:
 
-| Camada                 | Função                                                | Exemplo                                                      |
-| ---------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
-| **Domain (Entity)**    | Define o modelo de negócio e suas regras básicas.     | `User.ts` com propriedades e métodos como `changePassword()` |
-| **Repository**         | Implementa o acesso ao banco (via Prisma).            | `UserRepository.ts`                                          |
-| **Service (Use Case)** | Lógica de aplicação que usa repositórios e entidades. | `CreateUserService.ts`                                       |
-| **Controller**         | Recebe requisições HTTP e chama serviços.             | `UserController.ts`                                          |
-| **Routes**             | Define endpoints.                                     | `user.routes.ts`                                             |
+| Camada         | Função                                               | Exemplo (no domínio 'movies') |
+| -------------- | ---------------------------------------------------- | ----------------------------- |
+| **Domain**     | Define o modelo de negócio e suas regras.            | `Movie.ts`                    |
+| **Repository** | Implementa o acesso ao banco de dados (via Prisma).  | `MovieRepository.ts`          |
+| **Service**    | Orquestra a lógica de aplicação e regras de negócio. | `MovieService.ts`             |
+| **Controller** | Recebe requisições HTTP e chama a camada de serviço. | `MovieController.ts`          |
+| **Routes**     | Mapeia os endpoints da API para os controllers.      | `movie.routes.ts`             |
+
+Essa abordagem, que agrupa os arquivos por funcionalidade, é projetada para ser escalável e manutenível.
 
 #### Estrutura de pastas
 
@@ -17,30 +19,22 @@ src/
 │
 ├── app/
 │   ├── domains/
-│   │   └── user/
-│   │       ├── User.ts                 # Entidade (POO)
-│   │       ├── UserRepository.ts       # Prisma + Repositório
-│   │       ├── CreateUserService.ts    # Caso de uso
-│   │       ├── UserController.ts       # Controller
-│   │       └── user.routes.ts          # Rotas Express
+│   │   └── movies/
+│   │       ├── Movie.ts                # Entidade (POO)
+│   │       ├── MovieRepository.ts      # Camada de acesso a dados
+│   │       ├── MovieService.ts         # Camada de serviço (lógica de negócio)
+│   │       ├── MovieController.ts      # Camada de apresentação (HTTP)
+│   │       └── movie.routes.ts         # Definição de rotas
 │   │
 │   ├── middlewares/
-│   ├── errors/
-│   ├── utils/
-│   └── tests/
-│       ├── unit/
-│       └── e2e/
-│
-├── config/
-│   ├── prisma/
-│   │   └── client.ts
-│   ├── swagger/
-│   │   ├── swagger.ts
-│   │   └── scalar.ts
-│   ├── observability/
-│   │   ├── jaeger.ts
-│   │   └── tracer.ts
-│   └── env.ts
+│   │   └── validateBody.ts
+│   │
+│   ├── validators/
+│   │   └── movie.validator.ts
+│   │
+│   └── config/
+│       └── prisma/
+│           └── client.ts
 │
 ├── server.ts
 ├── app.ts
